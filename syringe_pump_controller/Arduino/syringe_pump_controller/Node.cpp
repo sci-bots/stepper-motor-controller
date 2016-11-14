@@ -1,6 +1,6 @@
 #include "Node.h"
 
-namespace rpc_project_template {
+namespace syringe_pump_controller {
 
 void Node::begin() {
   config_.set_buffer(get_buffer());
@@ -31,4 +31,4 @@ void Node::set_i2c_address(uint8_t value) {
   config_._.i2c_address = address;
 }
 
-}  // namespace rpc_project_template
+}  // namespace syringe_pump_controller

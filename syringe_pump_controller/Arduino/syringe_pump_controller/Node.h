@@ -6,7 +6,7 @@
 #include <NadaMQ.h>
 #include <CArrayDefs.h>
 #include "RPCBuffer.h"  // Define packet sizes
-#include "RpcProjectTemplate/Properties.h"  // Define package name, URL, etc.
+#include "SyringePumpController/Properties.h"  // Define package name, URL, etc.
 #include <BaseNodeRpc/BaseNode.h>
 #include <BaseNodeRpc/BaseNodeRpc.h>
 #include <BaseNodeRpc/BaseNodeEeprom.h>
@@ -19,13 +19,13 @@
 #include <BaseNodeRpc/SerialHandler.h>
 #include <pb_validate.h>
 #include <pb_eeprom.h>
-#include "rpc_project_template_config_validate.h"
-#include "rpc_project_template_state_validate.h"
-#include "RpcProjectTemplate/config_pb.h"
-#include "RpcProjectTemplate/state_pb.h"
+#include "syringe_pump_controller_config_validate.h"
+#include "syringe_pump_controller_state_validate.h"
+#include "SyringePumpController/config_pb.h"
+#include "SyringePumpController/state_pb.h"
 
 
-namespace rpc_project_template {
+namespace syringe_pump_controller {
 const size_t FRAME_SIZE = (3 * sizeof(uint8_t)  // Frame boundary
                            - sizeof(uint16_t)  // UUID
                            - sizeof(uint16_t)  // Payload length
@@ -33,9 +33,9 @@ const size_t FRAME_SIZE = (3 * sizeof(uint8_t)  // Frame boundary
 
 class Node;
 
-typedef nanopb::EepromMessage<rpc_project_template_Config,
+typedef nanopb::EepromMessage<syringe_pump_controller_Config,
                               config_validate::Validator<Node> > config_t;
-typedef nanopb::Message<rpc_project_template_State,
+typedef nanopb::Message<syringe_pump_controller_State,
                         state_validate::Validator<Node> > state_t;
 
 class Node :
@@ -55,8 +55,8 @@ public:
 
   uint8_t buffer_[BUFFER_SIZE];
 
-  Node() : BaseNode(), BaseNodeConfig<config_t>(rpc_project_template_Config_fields),
-           BaseNodeState<state_t>(rpc_project_template_State_fields) {}
+  Node() : BaseNode(), BaseNodeConfig<config_t>(syringe_pump_controller_Config_fields),
+           BaseNodeState<state_t>(syringe_pump_controller_State_fields) {}
 
   UInt8Array get_buffer() { return UInt8Array_init(sizeof(buffer_), buffer_); }
   /* This is a required method to provide a temporary buffer to the
@@ -84,7 +84,7 @@ public:
    */
 };
 
-}  // namespace rpc_project_template
+}  // namespace syringe_pump_controller
 
 
 #endif  // #ifndef ___NODE__H___

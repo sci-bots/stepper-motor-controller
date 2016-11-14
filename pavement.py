@@ -51,7 +51,7 @@ options(
                   'BaseNodeI2cHandler<Handler>',
                   'BaseNodeConfig<ConfigMessage, Address>',
                   'BaseNodeState<StateMessage>'],
-    rpc_classes=['rpc_project_template::Node'],
+    rpc_classes=['syringe_pump_controller::Node'],
     DEFAULT_ARDUINO_BOARDS=DEFAULT_ARDUINO_BOARDS,
     setup=dict(name=package_name,
                version=VERSION,

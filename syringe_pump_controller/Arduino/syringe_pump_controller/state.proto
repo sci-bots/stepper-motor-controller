@@ -1,4 +1,4 @@
-package rpc_project_template;
+package syringe_pump_controller;
 
 message State {
   /* # State structure #
