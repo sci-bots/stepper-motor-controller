@@ -33,8 +33,8 @@ PROPERTIES = OrderedDict([('package_name', package_name),
 LIB_PROPERTIES = PROPERTIES.copy()
 LIB_PROPERTIES.update(OrderedDict([('author', 'Ryan Fobel'),
                                    ('author_email', 'ryan@sci-bots.com'),
-                                   ('short_description', 'Open-source syringe '
-                                    'pump controller based on the Arduino '
+                                   ('short_description', 'Stepper motor'
+                                    'controller based on the Arduino '
                                     'base node RPC framework.'),
                                    ('version', VERSION),
                                    ('long_description', ''),
@@ -51,7 +51,7 @@ options(
                   'BaseNodeI2cHandler<Handler>',
                   'BaseNodeConfig<ConfigMessage, Address>',
                   'BaseNodeState<StateMessage>'],
-    rpc_classes=['syringe_pump_controller::Node'],
+    rpc_classes=['stepper_motor_controller::Node'],
     DEFAULT_ARDUINO_BOARDS=DEFAULT_ARDUINO_BOARDS,
     setup=dict(name=package_name,
                version=VERSION,

@@ -11,12 +11,12 @@
 #include "RPCBuffer.h"
 #include "NodeCommandProcessor.h"
 #include "BaseNodeRpc.h"
-#include "SyringePumpController.h"
+#include "StepperMotorController.h"
 #include "Node.h"
 
 
-syringe_pump_controller::Node node_obj;
-syringe_pump_controller::CommandProcessor<syringe_pump_controller::Node> command_processor(node_obj);
+stepper_motor_controller::Node node_obj;
+stepper_motor_controller::CommandProcessor<stepper_motor_controller::Node> command_processor(node_obj);
 
 
 void i2c_receive_event(int byte_count) { node_obj.i2c_handler_.receiver()(byte_count); }

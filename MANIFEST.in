@@ -6,6 +6,6 @@ include pavement.py
 include paver-minilib.zip
 include setup.py
 include SConstruct
-recursive-include syringe_pump_controller *
-recursive-exclude syringe_pump_controller *.pyc
-recursive-exclude syringe_pump_controller *.o
+recursive-include stepper_motor_controller *
+recursive-exclude stepper_motor_controller *.pyc
+recursive-exclude stepper_motor_controller *.o

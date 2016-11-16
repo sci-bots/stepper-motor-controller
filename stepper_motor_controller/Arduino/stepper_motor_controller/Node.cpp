@@ -1,6 +1,6 @@
 #include "Node.h"
 
-namespace syringe_pump_controller {
+namespace stepper_motor_controller {
 
 uint16_t Node::steps_;
 bool Node::is_running_;
@@ -46,4 +46,4 @@ void Node::set_i2c_address(uint8_t value) {
   config_._.i2c_address = address;
 }
 
-}  // namespace syringe_pump_controller
+}  // namespace stepper_motor_controller

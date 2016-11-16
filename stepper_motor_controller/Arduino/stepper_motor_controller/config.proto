@@ -1,4 +1,4 @@
-package syringe_pump_controller;
+package stepper_motor_controller;
 
 message Config {
   /* # Configuration structure #
