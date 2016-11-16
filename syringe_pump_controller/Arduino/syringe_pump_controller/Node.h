@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <Arduino.h>
 #include <NadaMQ.h>
+#include <TimerOne.h>
 #include <CArrayDefs.h>
 #include "RPCBuffer.h"  // Define packet sizes
 #include "SyringePumpController/Properties.h"  // Define package name, URL, etc.
@@ -53,6 +54,15 @@ public:
 
   static const uint16_t BUFFER_SIZE = 128;  // >= longest property string
 
+  static const uint8_t STEP_PIN = 3;
+  static const uint8_t DIR_PIN = 4;
+  static const uint8_t MS1_PIN = 5;
+  static const uint8_t MS2_PIN = 6;
+  static const uint8_t MS3_PIN = 7;
+
+  static uint16_t steps_;
+  static bool is_running_;
+
   uint8_t buffer_[BUFFER_SIZE];
 
   Node() : BaseNode(), BaseNodeConfig<config_t>(syringe_pump_controller_Config_fields),
@@ -61,6 +71,20 @@ public:
   UInt8Array get_buffer() { return UInt8Array_init(sizeof(buffer_), buffer_); }
   /* This is a required method to provide a temporary buffer to the
    * `BaseNode...` classes. */
+
+  static void timer_callback() {
+    steps_--;
+    digitalWrite(STEP_PIN, HIGH);
+    digitalWrite(STEP_PIN, LOW);
+    if (steps_ == 0) {
+      stop();
+    }
+  }
+
+  static void stop() {
+    is_running_ = false;
+    Timer1.stop();
+  }
 
   void begin();
   void set_i2c_address(uint8_t value);  // Override to validate i2c address
@@ -82,6 +106,33 @@ public:
    * [1]: https://github.com/wheeler-microfluidics/arduino_rpc
    * [2]: https://github.com/wheeler-microfluidics/base_node_rpc
    */
+  void move(uint16_t steps, float steps_per_second) {
+    stop();
+    is_running_ = true;
+    steps_ = steps;
+    Timer1.setPeriod(1e6 / steps_per_second); // set timer period in us
+    Timer1.restart();
+  }
+
+  bool is_running() { return is_running_; }
+  uint16_t steps_remaining() { return steps_; }
+
+  bool on_config_microstep_setting_changed(uint32_t microstep_setting) {
+    /* This method is triggered whenever a microstep is included in a config
+    * update. */
+    if (microstep_setting == 1) {
+      digitalWrite(MS1_PIN, 0);
+      digitalWrite(MS2_PIN, 0);
+      digitalWrite(MS3_PIN, 0);
+    } else if (microstep_setting == 16) {
+      digitalWrite(MS1_PIN, 1);
+      digitalWrite(MS2_PIN, 1);
+      digitalWrite(MS3_PIN, 1);
+    } else {
+      return false;
+    }
+    return true;
+  }
 };
 
 }  // namespace syringe_pump_controller

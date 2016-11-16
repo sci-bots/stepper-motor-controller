@@ -11,8 +11,8 @@ message Config {
    *
    * This makes it possible for clients/devices based on the base-node-rpc
    * package to interface with each other. */
-  optional uint32 serial_number = 1;
-  optional uint32 baud_rate = 2 [default = 115200];
+  // optional uint32 serial_number = 1; // deprecated
+  // optional uint32 baud_rate = 2 [default = 115200]; // deprecated
   optional uint32 i2c_address = 3;
 
   /* Start new fields below.
@@ -21,4 +21,6 @@ message Config {
    *      optional float my_float_field = 50;
    *      optional int32 my_int_field = 51;
    */
+  optional uint32 steps_per_revolution = 50 [default = 200];
+  optional uint32 microstep_setting = 51 [default = 1];
 }

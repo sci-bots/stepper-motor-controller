@@ -24,18 +24,18 @@ module_name = PROJECT_PREFIX
 package_name = module_name.replace('_', '-')
 rpc_module = import_module(PROJECT_PREFIX)
 VERSION = version.getVersion()
-URL='http://github.com/wheeler-microfluidics/%s.git' % package_name
+URL='http://github.com/sci-bots/%s.git' % package_name
 PROPERTIES = OrderedDict([('package_name', package_name),
                           ('display_name', package_name),
-                          ('manufacturer', 'Wheeler Lab'),
+                          ('manufacturer', 'Sci-Bots Inc.'),
                           ('software_version', VERSION),
                           ('url', URL)])
 LIB_PROPERTIES = PROPERTIES.copy()
-LIB_PROPERTIES.update(OrderedDict([('author', 'Christian Fobel'),
-                                   ('author_email', 'christian@fobel.net'),
-                                   ('short_description', 'Template project '
-                                    'demonstrating use of Arduino base node '
-                                    'RPC framework.'),
+LIB_PROPERTIES.update(OrderedDict([('author', 'Ryan Fobel'),
+                                   ('author_email', 'ryan@sci-bots.com'),
+                                   ('short_description', 'Open-source syringe '
+                                    'pump controller based on the Arduino '
+                                    'base node RPC framework.'),
                                    ('version', VERSION),
                                    ('long_description', ''),
                                    ('category', 'Communication'),
@@ -56,8 +56,8 @@ options(
     setup=dict(name=package_name,
                version=VERSION,
                description=LIB_PROPERTIES['short_description'],
-               author='Christian Fobel',
-               author_email='christian@fobel.net',
+               author='Ryan Fobel',
+               author_email='ryan@sci-bots.com',
                url=URL,
                license='GPLv2',
                install_requires=['base-node-rpc>=0.12.post23'],

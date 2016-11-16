@@ -39,10 +39,12 @@ def get_includes():
 
     '''
     import base_node_rpc
+    import arduino_timer_one
 
     return ([get_sketch_directory()] +
             list(get_lib_directory().walkdirs('src')) +
-            base_node_rpc.get_includes())
+            base_node_rpc.get_includes() +
+            arduino_timer_one.get_includes())
 
 
 def get_sources():
@@ -51,10 +53,12 @@ def get_sources():
     files that are not contained in Arduino libraries.
     '''
     import base_node_rpc
+    import arduino_timer_one
 
     return (get_sketch_directory().files('*.c*') +
             list(get_lib_directory().walkfiles('*.c*')) +
-            base_node_rpc.get_sources())
+            base_node_rpc.get_sources() +
+            arduino_timer_one.get_sources())
 
 
 def get_firmwares():

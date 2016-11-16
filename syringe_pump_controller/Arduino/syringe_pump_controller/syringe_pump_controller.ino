@@ -6,6 +6,7 @@
 #include "ArduinoRpc.h"
 #include "nanopb.h"
 #include "NadaMQ.h"
+#include "TimerOne.h"
 #include "CArrayDefs.h"
 #include "RPCBuffer.h"
 #include "NodeCommandProcessor.h"
