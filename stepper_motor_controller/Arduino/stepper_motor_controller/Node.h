@@ -32,6 +32,7 @@ const size_t FRAME_SIZE = (3 * sizeof(uint8_t)  // Frame boundary
                            - sizeof(uint16_t)  // Payload length
                            - sizeof(uint16_t));  // CRC
 
+const char HARDWARE_VERSION_[] = "0.3";
 class Node;
 
 typedef nanopb::EepromMessage<stepper_motor_controller_Config,
@@ -72,21 +73,8 @@ public:
   /* This is a required method to provide a temporary buffer to the
    * `BaseNode...` classes. */
 
-  static void timer_callback() {
-    steps_--;
-    digitalWrite(STEP_PIN, HIGH);
-    digitalWrite(STEP_PIN, LOW);
-    if (steps_ == 0) {
-      stop();
-    }
-  }
-
-  static void stop() {
-    is_running_ = false;
-    Timer1.stop();
-  }
-
   void begin();
+
   void set_i2c_address(uint8_t value);  // Override to validate i2c address
 
   /****************************************************************************
@@ -106,6 +94,23 @@ public:
    * [1]: https://github.com/wheeler-microfluidics/arduino_rpc
    * [2]: https://github.com/wheeler-microfluidics/base_node_rpc
    */
+  UInt8Array hardware_version() { return UInt8Array_init(strlen(HARDWARE_VERSION_),
+                      (uint8_t *)&HARDWARE_VERSION_[0]); }
+
+  static void timer_callback() {
+    steps_--;
+    digitalWrite(STEP_PIN, HIGH);
+    digitalWrite(STEP_PIN, LOW);
+    if (steps_ == 0) {
+      stop();
+    }
+  }
+
+  static void stop() {
+    is_running_ = false;
+    Timer1.stop();
+  }
+
   void move(uint16_t steps, float steps_per_second) {
     stop();
     is_running_ = true;
@@ -115,6 +120,7 @@ public:
   }
 
   bool is_running() { return is_running_; }
+
   uint16_t steps_remaining() { return steps_; }
 
   bool on_config_microstep_setting_changed(uint32_t microstep_setting) {

@@ -60,6 +60,6 @@ options(
                author_email='ryan@sci-bots.com',
                url=URL,
                license='GPLv2',
-               install_requires=['base-node-rpc>=0.12.post23'],
+               install_requires=['base-node-rpc>=0.17'],
                include_package_data=True,
                packages=[str(PROJECT_PREFIX)]))
