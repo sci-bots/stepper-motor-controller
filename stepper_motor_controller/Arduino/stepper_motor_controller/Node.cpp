@@ -3,7 +3,7 @@
 namespace stepper_motor_controller {
 
 uint16_t Node::steps_;
-bool Node::is_running_;
+bool Node::is_running_ = false;
 
 void Node::begin() {
   config_.set_buffer(get_buffer());

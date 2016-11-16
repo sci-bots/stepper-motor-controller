@@ -32,7 +32,7 @@ const size_t FRAME_SIZE = (3 * sizeof(uint8_t)  // Frame boundary
                            - sizeof(uint16_t)  // Payload length
                            - sizeof(uint16_t));  // CRC
 
-const char HARDWARE_VERSION_[] = "0.3";
+const char HARDWARE_VERSION_[] = "0.1";
 class Node;
 
 typedef nanopb::EepromMessage<stepper_motor_controller_Config,
@@ -111,10 +111,13 @@ public:
     Timer1.stop();
   }
 
-  void move(uint16_t steps, float steps_per_second) {
+  bool direction() { return digitalRead(DIR_PIN); }
+
+  void move(int16_t steps, float steps_per_second) {
     stop();
     is_running_ = true;
-    steps_ = steps;
+    digitalWrite(DIR_PIN, steps > 0);
+    steps_ = abs(steps);
     Timer1.setPeriod(1e6 / steps_per_second); // set timer period in us
     Timer1.restart();
   }

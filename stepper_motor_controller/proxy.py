@@ -29,6 +29,13 @@ try:
         host_package_name = str(path(__file__).parent.name.replace('_', '-'))
 
         @property
+        def direction(self):
+            return self._direction()
+
+        def _direction(self):
+            return super(ProxyMixin, self).direction()
+
+        @property
         def is_running(self):
             return self._is_running()
 
