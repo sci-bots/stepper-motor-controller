@@ -7,7 +7,7 @@ Package for controlling a stepper motor via remote procedure calls (RPC) utilizi
 
 This package contains:
 
- - Firmware compatible with Arduino Uno.
+ - Firmware compatible with Arduino [Uno][5].
  - Installable Python package for interfacing with Arduino firmware through
    serial port or i2c (through a serial-to-i2c proxy).
 
@@ -29,6 +29,35 @@ serial port.  On systems with multiple serial ports, use the `-p` command line
 argument to specify the serial port to use.  For example:
 
     python -m stepper_motor_controller.bin.upload -p COM3 uno
+
+## Hardware ##
+
+This package is designed to work with the [Pololu A4988 Stepper Motor Driver Carrier][4]
+and an Arduino [Uno][5] compatible microcontroller development board. Connect the pins on
+the Pololu driver board as follows:
+
+| Pololu A4988 Driver board | Conection          |
+| ------------------------- | ------------------ |
+| VMOT                      | +12V               |
+| GND                       | GND                |
+| 2B                        | stepper motor wire |
+| 2A                        | stepper motor wire |
+| 1A                        | stepper motor wire |
+| 1B                        | stepper motor wire |
+| VDD                       | +5V                |
+| GND                       | GND                |
+| /EN                       | --                 |
+| MS1                       | Arduino pin D5     |
+| MS2                       | Arduino pin D6     |
+| MS3                       | Arduino pin D7     |
+| /RST                      | --                 |
+| /SLP                      | GND                |
+| STEP                      | Arduino pin D3     |
+| DIR                       | Arduino pin D4     |
+
+Instruction for figuring out the stepper motor wiring to the driver board can be found [here][6].
+
+### **Note: you must set the current limiting screw on the driver board following the [online instructions][4] (this limit is dependent on the capabilities of the motor you are using). Failure to complete this step may cause permanent damage to the motor driver! ###
 
 --------------------------------------------------
 
@@ -148,9 +177,15 @@ New methods may be added to the RPC API by adding new methods to the
 
 # Authors #
 
-Christian Fobel <christian@fobel.net>
+This work is released under an [MIT license][7].
+
+Christian Fobel <christian@fobel.net><br>
 Ryan Fobel <ryan@fobel.net>
 
 [1]: https://www.arduino.cc/en/Reference/HomePage
 [2]: http://www.scons.org/
 [3]: https://github.com/wheeler-microfluidics/base_node_rpc
+[4]: https://www.pololu.com/product/1182
+[5]: https://www.arduino.cc/en/Main/ArduinoBoardUno
+[6]: http://reprap.org/wiki/Stepper_wiring
+[7]: https://github.com/sci-bots/stepper-motor-controller/blob/master/LICENSE.md
