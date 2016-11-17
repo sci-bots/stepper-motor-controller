@@ -55,7 +55,7 @@ the Pololu driver board as follows:
 | STEP                      | Arduino pin D3     |
 | DIR                       | Arduino pin D4     |
 
-Instruction for figuring out the stepper motor wiring to the driver board can be found [here][6].
+Instructions for figuring out the wiring of the stepper motor can be found [here][6].
 
 ### **Note: you must set the current limiting screw on the driver board following the [online instructions][4] (this limit is dependent on the capabilities of the motor you are using). Failure to complete this step may cause permanent damage to the motor driver! ###
 
@@ -109,7 +109,7 @@ serialized and stored in EEPROM, allowing settings to persist across device
 resets.  The state is stored in device memory and is reinitialized each time
 the device starts up.
 
-Print (non-default) configuration values.
+Print configuration values.
 
     >>> proxy.config
     steps_per_revolution    200
@@ -117,7 +117,7 @@ Print (non-default) configuration values.
     microstep_setting         1
     dtype: object
 
-Configuration settings can be set by updating the configuration.
+Update the configuration settings.
 
     >>> result_code = proxy.update_config(i2c_address=32)
 
