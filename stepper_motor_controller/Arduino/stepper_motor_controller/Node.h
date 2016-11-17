@@ -97,7 +97,7 @@ public:
   UInt8Array hardware_version() { return UInt8Array_init(strlen(HARDWARE_VERSION_),
                       (uint8_t *)&HARDWARE_VERSION_[0]); }
 
-  static void timer_callback() {
+  static void _timer_callback() {
     steps_--;
     digitalWrite(STEP_PIN, HIGH);
     digitalWrite(STEP_PIN, LOW);

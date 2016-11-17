@@ -32,8 +32,8 @@ void Node::begin() {
   Timer1.initialize(1000); // initialize timer1, and set a 1 ms period
   Timer1.stop();
 
-  // attach timer_callback() as a timer overflow interrupt
-  Timer1.attachInterrupt(timer_callback);
+  // attach _timer_callback() as a timer overflow interrupt
+  Timer1.attachInterrupt(_timer_callback);
 }
 
 

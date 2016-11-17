@@ -1,13 +1,13 @@
 # stepper-motor-controller #
 
-Template package for remote procedure call (RPC) project, utilizing
+Package for controlling a stepper motor via remote procedure calls (RPC) utilizing
 [`base-node-rpc`][3].
 
 ## Overview ##
 
 This package contains:
 
- - Firmware compatible with Arduino Uno or Mega2560.
+ - Firmware compatible with Arduino Uno.
  - Installable Python package for interfacing with Arduino firmware through
    serial port or i2c (through a serial-to-i2c proxy).
 
@@ -22,10 +22,7 @@ The Python package can be installed through `pip` using the following command:
 To upload the pre-compiled firmware included in the Python package, run the
 following command:
 
-    python -m stepper_motor_controller.bin.upload <board type>
-
-replacing `<board type>` with either `uno` or `mega2560`, depending on the
-model of the board.
+    python -m stepper_motor_controller.bin.upload uno
 
 This will attempt to upload the firmware by automatically discovering the
 serial port.  On systems with multiple serial ports, use the `-p` command line
@@ -44,30 +41,27 @@ See the session log below for example usage.
 
 ### Example interactive session ###
 
-    >>> from serial import Serial
-    >>> from stepper_motor_controller import Proxy
+    >>> from stepper_motor_controller import SerialProxy
 
-Connect to serial device.
+Initialize a serial proxy (the computer will scan all available serial ports until it finds a match).
 
-    >>> serial_device = Serial('/dev/ttyUSB0', baudrate=115200)
-
-Initialize a device proxy using existing serial connection.
-
-    >>> proxy = Proxy(serial_device)
+    >>> proxy = SerialProxy()
 
 Query the number of bytes free in device RAM.
 
     >>> proxy.ram_free()
-    409
+    325 
 
 Query descriptive properties of device.
 
-    >>> proxy.properties()
-    base_node_software_version                               0.9.post8.dev141722557
-    name                                                                  stepper_motor_controller
-    manufacturer                                                        Wheeler Lab
-    url                           http://github.com/wheeler-microfluidics/rpc-p...
-    software_version                                                            0.1
+    >>> proxy.properties
+    base_node_software_version
+    package_name                                           stepper-motor-controller
+    display_name                                           stepper-motor-controller
+    manufacturer                                                      Sci-Bots Inc.
+    url                           http://github.com/sci-bots/stepper-motor-contr...
+    software_version                                                      0.1.post3
+    hardware_version                                                            0.1
     dtype: object
 
 Use Arduino API methods interactively.
@@ -79,7 +73,6 @@ Use Arduino API methods interactively.
     >>> # Turn led off
     >>> proxy.digital_write(13, 0)
 
-
 ### Configuration and state ###
 
 The device stores a *configuration* and a *state*.  The configuration is
@@ -89,20 +82,15 @@ the device starts up.
 
 Print (non-default) configuration values.
 
-    >>> print proxy.config
-    serial_number: 2
-    baud_rate: 115200
-    i2c_address: 17
+    >>> proxy.config
+    steps_per_revolution    200
+    i2c_address              10
+    microstep_setting         1
+    dtype: object
 
 Configuration settings can be set by updating the configuration.
 
-    >>> result_code = proxy.update_config(serial_number=1234)
     >>> result_code = proxy.update_config(i2c_address=32)
-
-To persist changes to *configuration* across device reset - *not* state - use
-`save_config` method.
-
-    >>> proxy.save_config()
 
 ### Other methods ###
 
@@ -111,33 +99,33 @@ that many of the [Arduino API][1] functions (e.g., `pin_mode`, `digital_write`,
 etc.) are exposed through the RPC API.
 
     >>> proxy.
-    proxy.analog_read                      proxy.microseconds
-    proxy.analog_write                     proxy.milliseconds
-    proxy.array_length                     proxy.name
-    proxy.base_node_software_version       proxy.on_config_baud_rate_changed
-    proxy.begin                            proxy.on_config_i2c_address_changed
-    proxy.buffer_size                      proxy.on_config_serial_number_changed
-    proxy.channel_count                    proxy.on_state_frequency_changed
-    proxy.config                           proxy.on_state_voltage_changed
-    proxy.delay_ms                         proxy.pin_mode
-    proxy.delay_us                         proxy.properties
-    proxy.digital_read                     proxy.ram_free
-    proxy.digital_write                    proxy.read_eeprom_block
-    proxy.echo_array                       proxy.reset_config
-    proxy.get_buffer                       proxy.reset_state
-    proxy.i2c_address                      proxy.save_config
-    proxy.i2c_available                    proxy.serialize_config
-    proxy.i2c_buffer_size                  proxy.serialize_state
-    proxy.i2c_read                         proxy.set_i2c_address
-    proxy.i2c_read_byte                    proxy.set_state_of_channels
-    proxy.i2c_request                      proxy.software_version
-    proxy.i2c_request_from                 proxy.state
-    proxy.i2c_scan                         proxy.state_of_channels
-    proxy.i2c_write                        proxy.str_echo
-    proxy.load_config                      proxy.update_config
-    proxy.manufacturer                     proxy.update_eeprom_block
-    proxy.max_i2c_payload_size             proxy.update_state
-    proxy.max_serial_payload_size          proxy.url
+    analog_read                     max_i2c_payload_size
+    analog_write                    max_serial_payload_size
+    array_length                    microseconds
+    base_node_software_version      milliseconds
+    begin                           move
+    delay_ms                        on_config_i2c_address_changed
+    delay_us                        on_config_microstep_setting_changed
+    digital_read                    package_name
+    digital_write                   pin_mode
+    display_name                    ram_free
+    echo_array                      read_eeprom_block
+    eeprom_e2end                    reset
+    get_buffer                      reset_config
+    hardware_version                reset_state
+    help                            save_config
+    i2c_address                     serialize_config
+    i2c_available                   serialize_state
+    i2c_buffer_size                 set_clock
+    i2c_disable_broadcast           set_i2c_address
+    i2c_enable_broadcast            software_version
+    i2c_packet_reset                stop
+    i2c_read                        str_echo
+    i2c_read_byte                   terminate
+    i2c_request                     update_config
+    i2c_request_from                update_eeprom_block
+    i2c_scan                        update_state
+    i2c_write                       url
 
 --------------------------------------------------
 
@@ -147,21 +135,21 @@ The Arduino firmware/sketch is located in the `stepper_motor_controller/Arduino/
 directory.  The key functionality is defined in the `stepper_motor_controller::Node` class in
 the file `Node.h`.
 
-Running the following command will build the firmware using [SCons][2] for
-Arduino Uno and Arduino Mega2560, and will package the resulting firmware in a
-Python package, ready for distribution.
+Running the following command will build the firmware using [SCons][2]
+for Arduino Uno, and will package the resulting firmware in a Python package,
+ready for distribution.
 
-    paver sdist
+    paver bdist_wheel 
 
 ### Adding new remote procedure call (RPC) methods ###
 
 New methods may be added to the RPC API by adding new methods to the
 `stepper_motor_controller::Node` class in the file `Node.h`.
 
-# Author #
+# Authors #
 
-Copyright 2015-2016 Christian Fobel <christian@fobel.net>
-
+Christian Fobel <christian@fobel.net>
+Ryan Fobel <ryan@fobel.net>
 
 [1]: https://www.arduino.cc/en/Reference/HomePage
 [2]: http://www.scons.org/
