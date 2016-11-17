@@ -55,11 +55,11 @@ public:
 
   static const uint16_t BUFFER_SIZE = 128;  // >= longest property string
 
-  static const uint8_t STEP_PIN = 3;
-  static const uint8_t DIR_PIN = 4;
-  static const uint8_t MS1_PIN = 5;
-  static const uint8_t MS2_PIN = 6;
-  static const uint8_t MS3_PIN = 7;
+  static const uint8_t STEP_PIN = 2;
+  static const uint8_t DIR_PIN = 3;
+  static const uint8_t MS1_PIN = 4;
+  static const uint8_t MS2_PIN = 5;
+  static const uint8_t MS3_PIN = 6;
 
   static uint16_t steps_;
   static bool is_running_;

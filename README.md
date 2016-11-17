@@ -47,13 +47,13 @@ the Pololu driver board as follows:
 | VDD                       | +5V                |
 | GND                       | GND                |
 | /EN                       | --                 |
-| MS1                       | Arduino pin D5     |
-| MS2                       | Arduino pin D6     |
-| MS3                       | Arduino pin D7     |
+| MS1                       | Arduino pin D4     |
+| MS2                       | Arduino pin D5     |
+| MS3                       | Arduino pin D6     |
 | /RST                      | --                 |
 | /SLP                      | GND                |
-| STEP                      | Arduino pin D3     |
-| DIR                       | Arduino pin D4     |
+| STEP                      | Arduino pin D2     |
+| DIR                       | Arduino pin D3     |
 
 Instructions for figuring out the wiring of the stepper motor can be found [here][6].
 
